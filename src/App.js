@@ -1,24 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SignUp from './components/Signup';
+import SignIn from './components/Signin';
+import GenreList from './components/GenreList';
+import AddGenre from './components/AddGenre';
+import EditGenre from './components/EditGenre';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+        
+          <Route
+            path="/"
+            element={<SignUp heading="Sign Up for an Account" />}
+          />
+            <Route
+            path="/signin"
+            element={<SignIn heading="Sign In to Your Account" />}
+          />
+           <Route
+            path="/genres"
+            element={<GenreList heading="Genre List" />}
+          />
+          <Route
+            path="/genres/add"
+            element={<AddGenre heading="Add New Genre" />}
+          />
+          <Route
+            path="/genres/:id/edit"
+            element={<EditGenre heading="Edit Genre" />}
+          />
+          
+  </Routes>
+      </div>
+    </Router>
   );
 }
 
