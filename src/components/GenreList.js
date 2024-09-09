@@ -53,7 +53,9 @@ const GenreList = ({ heading }) => {
           'Authorization': `Bearer ${getToken()}`
         }
       });
-      dispatch(deleteGenre({ id }));
+      
+      dispatch(deleteGenre(id)); 
+      console.log('Genre deleted successfully');
     } catch (error) {
       console.error("Failed to delete genre:", error.response?.data || error);
       alert(error.response?.data?.error || 'Failed to delete genre.');
@@ -100,9 +102,11 @@ const GenreList = ({ heading }) => {
                 </td>
                 <td>{genre.status || 'Active'}</td>
                 <td>
-                  <Link to={`/genre/${genre.id}/edit`}>Edit</Link> |
-                  <Link to={`/genre/${genre.id}/view`}>View</Link> |
-                  <button onClick={() => handleDelete(genre.id)}>Delete</button>
+                  <Link to={`/genre/${genre._id}/edit`}className="button-link">Edit</Link> 
+                  
+                  
+                  <Link to={`/genre/${genre._id}/view`}className="button-link">View</Link> 
+                  <button onClick={() => handleDelete(genre._id)}>Delete</button>
                 </td>
               </tr>
             ))}

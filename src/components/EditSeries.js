@@ -2,63 +2,64 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { updateGenre } from '../redux/genreSlice'; 
+import { updateSeriesItem } from '../redux/seriesSlice';
 import { Link } from 'react-router-dom';
-axios.defaults.baseURL = 'http://localhost:2022';
 
+axios.defaults.baseURL = 'http://localhost:2022';
 
 const getToken = () => localStorage.getItem('token');
 
-const EditGenre = () => {
+const EditSeries = () => {
   const { id } = useParams(); 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [genres, setGenres] = useState('');
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  
+
   useEffect(() => {
-    const fetchGenre = async () => {
+    const fetchSeries = async () => {
       try {
-        const response = await axios.get(`/genre/${id}`, {
+        const response = await axios.get(`/series/${id}`, {
           headers: {
             'Authorization': `Bearer ${getToken()}`
           }
         });
-        // const genre = response.data.data;
-        const genre=(response.data.data.genre);
-        setName(genre.name);
-        setDescription(genre.description);
-        setStatus(genre.status);
+        const data=(response.data.data.data);
+        setName(data.name);
+        setDescription(data.description);
+        setGenres(data.genres)
+        setStatus(data.status);
         
       } catch (error) {
-        setError(error.response?.data?.error || 'Failed to fetch genre.');
+        setError(error.response?.data?.error || 'Failed to fetch series.');
       }
     };
 
-    fetchGenre();
+    fetchSeries();
   }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(`/genre/${id}`, { name, description, status }, {
+      const response = await axios.patch(`/series/${id}`, { name, description,genres, status }, {
         headers: {
           'Authorization': `Bearer ${getToken()}`
         }
       });
-      dispatch(updateGenre(response.data.data)); 
-      navigate('/genres'); 
+      dispatch(updateSeriesItem(response.data.data)); 
+      navigate('/series'); 
     } catch (error) {
-      setError(error.response?.data?.error || 'Failed to update genre.');
+      setError(error.response?.data?.error || 'Failed to update series.');
     }
   };
 
   return (
     <div className="edit-genre-container">
-      <h1>Edit Genre</h1>
+      <h1>Edit Series</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
@@ -78,6 +79,14 @@ const EditGenre = () => {
           />
         </div>
         <div>
+          <label>Genres:</label>
+          <textarea
+            value={genres}
+            onChange={(e) => setGenres(e.target.value)}
+            required
+          />
+        </div>
+        <div>
           <label>Status:</label>
           <input
             type="text"
@@ -86,15 +95,14 @@ const EditGenre = () => {
             required
           />
         </div>
-        
         {error && <p className="error">{error}</p>}
-        <button type="submit">Update Genre</button>
+        <button type="submit">Update Series</button>
         <td>
-        <Link to={`/genres`}className="button-link">Back</Link> 
+        <Link to={`/series`}className="button-link">Back</Link> 
         </td>
       </form>
     </div>
   );
 };
 
-export default EditGenre;
+export default EditSeries;

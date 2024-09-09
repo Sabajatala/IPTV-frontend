@@ -93,7 +93,7 @@ const SignUp = ({ heading }) => {
         <small>Your password must have at least 8 characters</small>
       </div>
       <button type="submit">Sign Up</button>
-      <p> Don't have an account? <Link to="/Signin">LogIn here</Link></p>
+      <p> Don't have an account? <Link to="/Signin">Log In</Link></p>
 
 
     </form>

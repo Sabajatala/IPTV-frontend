@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 import { login } from '../redux/userSlice';
@@ -11,9 +12,7 @@ const SignIn = ({heading}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -26,14 +25,9 @@ const SignIn = ({heading}) => {
       if (response.status === 200) {
         dispatch(login({ email, password }));
         alert('Successfully signed in!');
-        
-      }
+        }
       const { token } = response.data;
-
-      
       localStorage.setItem('token', token);
-
-      
       navigate('/genres');
 
     } catch (error) {
@@ -49,9 +43,7 @@ const SignIn = ({heading}) => {
     <div>
       <h1>{heading}</h1>
       {
-   
-    
-    <form onSubmit={handleSubmit}>
+     <form onSubmit={handleSubmit}>
       
       <p>Welcome back! Please enter your details.</p>
       <div>
@@ -78,6 +70,8 @@ const SignIn = ({heading}) => {
         <a href="/forgot-password">Forgot Password?</a>
       </div>
       <button type="submit">Sign In</button>
+      {/* <p> Main <Link to="/genres">Main</Link></p> */}
+
       
     </form>
    

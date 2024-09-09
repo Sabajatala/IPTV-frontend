@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -5,11 +6,13 @@ import { Link } from 'react-router-dom';
 
 axios.defaults.baseURL = 'http://localhost:2022';
 
+
 const getToken = () => localStorage.getItem('token');
 
-const AddGenre = () => {
+const AddSeries = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [genre, setGenre] = useState('');
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -17,20 +20,20 @@ const AddGenre = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/genre', { name, description, status }, {
+      await axios.post('/series', { name, description, status ,genre}, {
         headers: {
           'Authorization': `Bearer ${getToken()}`
         }
       });
-      navigate('/genres'); 
+      navigate('/series'); 
     } catch (error) {
-      setError(error.response?.data?.error || 'Failed to add genre.');
+      setError(error.response?.data?.error || 'Failed to add series.');
     }
   };
 
   return (
-    <div className="add-genre-container">
-      <h1>Add Genre</h1>
+    <div className="add-series-container">
+      <h1>Add Series</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
@@ -50,6 +53,15 @@ const AddGenre = () => {
           />
         </div>
         <div>
+          <label>Genre:</label>
+          <textarea
+            value={genre}
+              type="string"
+            onChange={(e) => setGenre(e.target.value)}
+            required
+          />
+        </div>
+        <div>
           <label>Status:</label>
           <input
             type="text"
@@ -59,13 +71,14 @@ const AddGenre = () => {
           />
         </div>
         {error && <p className="error">{error}</p>}
-        <button type="submit">Add Genre</button>
+        <button type="submit">Add Series</button>
         <td>
-        <Link to={`/genres`}className="button-link">Back</Link> 
+        <Link to={`/series`}className="button-link">Back</Link> 
         </td>
       </form>
     </div>
   );
 };
 
-export default AddGenre;
+export default AddSeries;
+
